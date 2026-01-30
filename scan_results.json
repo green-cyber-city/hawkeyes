@@ -1,0 +1,26 @@
+{
+  "target": "google.com",
+  "resolved_ip": "172.253.118.101",
+  "scan_time": 0.31,
+  "total_ports": 2,
+  "open_ports": 2,
+  "results": [
+    {
+      "port": 80,
+      "status": "open",
+      "service": "HTTP",
+      "banner": "HTTP/1.1 404 Not Found\r\nContent-Type: text/html; charset=UTF-8\r\nReferrer-Policy: no-referrer\r\nConten"
+    },
+    {
+      "port": 443,
+      "status": "open",
+      "service": "HTTPS",
+      "banner": null
+    }
+  ],
+  "scan_metadata": {
+    "scanner_version": "1.0.0",
+    "timestamp": "2026-01-30T17:09:43.508941",
+    "format_version": "1.0"
+  }
+}

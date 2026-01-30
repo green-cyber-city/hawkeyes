@@ -1,0 +1,26 @@
+{
+  "target": "example.com",
+  "resolved_ip": "104.18.26.120",
+  "scan_time": 0.24,
+  "total_ports": 2,
+  "open_ports": 2,
+  "results": [
+    {
+      "port": 80,
+      "status": "open",
+      "service": "HTTP",
+      "banner": "HTTP/1.1 403 Forbidden\r\nDate: Fri, 30 Jan 2026 10:53:42 GMT\r\nContent-Type: text/plain; charset=UTF-8"
+    },
+    {
+      "port": 443,
+      "status": "open",
+      "service": "HTTPS",
+      "banner": "HTTP/1.1 400 Bad Request\r\nServer: cloudflare\r\nDate: Fri, 30 Jan 2026 10:53:42 GMT\r\nContent-Type: tex"
+    }
+  ],
+  "scan_metadata": {
+    "scanner_version": "1.0.0",
+    "timestamp": "2026-01-30T17:23:33.060270",
+    "format_version": "1.0"
+  }
+}

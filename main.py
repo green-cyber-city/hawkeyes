@@ -6,7 +6,7 @@ A multithreaded TCP port scanner for educational cybersecurity purposes.
 This tool scans specified ports on a target and identifies open services
 with banner grabbing capabilities.
 
-Author: TCP Port Scanner Team
+Author: Kyaw Ye Lin
 Version: 1.0.0
 """
 

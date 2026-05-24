@@ -137,10 +137,10 @@ class ResultFormatter:
             results: Complete scan results dictionary
         """
         try:
-            from utils.services import get_service_category
+            from hawkeyes.utils.services import get_service_category
         except ImportError:
             try:
-                from services import get_service_category
+                from .services import get_service_category
             except ImportError:
                 def get_service_category(port):
                     return "Other"
@@ -226,10 +226,15 @@ class ResultFormatter:
             True if successful, False otherwise
         """
         try:
+            from hawkeyes import __version__ as scanner_version
+        except ImportError:
+            scanner_version = '1.0.0'
+
+        try:
             # Add metadata
             results_with_metadata = results.copy()
             results_with_metadata['scan_metadata'] = {
-                'scanner_version': '1.0.0',
+                'scanner_version': scanner_version,
                 'timestamp': datetime.now().isoformat(),
                 'format_version': '1.0'
             }

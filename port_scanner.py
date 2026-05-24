@@ -7,36 +7,20 @@ import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Dict, List, Tuple, Optional
 
+from utils.banner_grabber import BannerGrabber
+from utils.port_parser import parse_port_specification, PortParsingError
+from utils.services import get_service_name
+
 
 class PortScanner:
-    COMMON_SERVICES = {
-        20: 'FTP Data',
-        21: 'FTP Control',
-        22: 'SSH',
-        23: 'Telnet',
-        25: 'SMTP',
-        53: 'DNS',
-        80: 'HTTP',
-        110: 'POP3',
-        143: 'IMAP',
-        443: 'HTTPS',
-        993: 'IMAPS',
-        995: 'POP3S',
-        3389: 'RDP',
-        5432: 'PostgreSQL',
-        3306: 'MySQL',
-        1433: 'MSSQL',
-        27017: 'MongoDB',
-        6379: 'Redis',
-        5984: 'CouchDB'
-    }
-
     def __init__(self, target: str, timeout: float = 1.0, max_threads: int = 100):
         self.target = target
         self.timeout = timeout
         self.max_threads = max_threads
         self.results = {}
         self.lock = threading.Lock()
+        self.grab_banners = True
+        self.banner_grabber = BannerGrabber()
 
     def _resolve_target(self) -> str:
         try:
@@ -45,32 +29,9 @@ class PortScanner:
             raise ValueError(f"Cannot resolve hostname: {self.target}")
 
     def _grab_banner(self, host: str, port: int) -> Optional[str]:
-        try:
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-                sock.settimeout(3.0)
-                sock.connect((host, port))
-                
-                if port in [80, 8080, 8000]:
-                    sock.send(b"GET / HTTP/1.1\r\nHost: " + host.encode() + b"\r\n\r\n")
-                elif port == 443 or port in [8443, 9443]:
-                    sock.send(b"GET / HTTP/1.1\r\nHost: " + host.encode() + b"\r\n\r\n")
-                elif port == 21:
-                    pass
-                elif port == 22:
-                    pass
-                elif port == 25:
-                    pass
-                else:
-                    sock.send(b"HELLO\r\n")
-                
-                try:
-                    banner = sock.recv(1024).decode('utf-8', errors='ignore').strip()
-                    return banner[:100] if banner else None
-                except:
-                    return None
-                    
-        except:
+        if not self.grab_banners:
             return None
+        return self.banner_grabber.grab_banner(host, port)
 
     def _scan_port(self, host: str, port: int) -> Tuple[int, str, Optional[str]]:
         try:
@@ -79,9 +40,8 @@ class PortScanner:
                 result = sock.connect_ex((host, port))
                 
                 if result == 0:
-                    status = 'open'
                     banner = self._grab_banner(host, port)
-                    return (port, status, banner)
+                    return (port, 'open', banner)
                 else:
                     return (port, 'closed', None)
                     
@@ -106,7 +66,8 @@ class PortScanner:
                 port, status, banner = future.result()
                 
                 if status == 'open':
-                    service = self.COMMON_SERVICES.get(port, 'Unknown')
+                    service_name = get_service_name(port)
+                    service = service_name if service_name != "unknown" else "Unknown"
                     
                     with self.lock:
                         self.results[port] = {
@@ -135,24 +96,10 @@ class PortScanner:
         return summary
 
     def parse_ports(self, port_input: str) -> List[int]:
-        ports = []
-        
-        if ',' in port_input:
-            port_parts = port_input.split(',')
-            for part in port_parts:
-                part = part.strip()
-                if '-' in part:
-                    start, end = map(int, part.split('-'))
-                    ports.extend(range(start, end + 1))
-                else:
-                    ports.append(int(part))
-        elif '-' in port_input:
-            start, end = map(int, port_input.split('-'))
-            ports.extend(range(start, end + 1))
-        else:
-            ports.append(int(port_input))
-        
-        return sorted(set(ports))
+        try:
+            return parse_port_specification(port_input)
+        except PortParsingError as e:
+            raise ValueError(str(e)) from e
 
     def save_results(self, results: Dict, filename: str):
         with open(filename, 'w') as f:
@@ -203,7 +150,7 @@ def main():
         scanner = PortScanner(args.target, args.timeout, args.threads)
         
         if args.no_banner:
-            scanner._grab_banner = lambda host, port: None
+            scanner.grab_banners = False
         
         ports = scanner.parse_ports(args.ports)
         print(f"Starting scan of {len(ports)} ports...")

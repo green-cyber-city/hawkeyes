@@ -1,0 +1,28 @@
+"""Terminal banner and info display for Hawkeyes."""
+
+from hawkeyes import __version__
+
+BANNER = r"""
+ ██╗  ██╗ █████╗ ██╗    ██╗██╗  ██╗███████╗██╗   ██╗███████╗███████╗
+ ██║  ██║██╔══██╗██║    ██║██║ ██╔╝██╔════╝╚██╗ ██╔╝██╔════╝██╔════╝
+ ███████║███████║██║ █╗ ██║█████╔╝ █████╗   ╚████╔╝ █████╗  ███████╗
+ ██╔══██║██╔══██║██║███╗██║██╔═██╗ ██╔══╝    ╚██╔╝  ██╔══╝  ╚════██║
+ ██║  ██║██║  ██║╚███╔███╔╝██║  ██╗███████╗   ██║   ███████╗███████║
+ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚══════╝
+"""
+
+
+def print_banner() -> None:
+    """Print the Hawkeyes banner and project information."""
+    print(BANNER)
+    print(f"  Version {__version__}  |  TCP Port Scanner for Educational Cybersecurity")
+    print()
+    print("  Hawkeyes scans TCP ports, identifies services, and grabs banners.")
+    print("  Only scan systems you own or have explicit permission to test.")
+    print()
+    print("  Usage:")
+    print('    hawk target example.com --ports "80,443"')
+    print('    hawk target 127.0.0.1 --ports "1-1000" --threads 200')
+    print('    hawk target example.com --ports "22,80,443" --output results.json')
+    print()
+    print("  Run 'hawk target --help' for all scan options.")

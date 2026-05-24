@@ -6,8 +6,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
 
-from utils.banner_grabber import BannerGrabber
-from utils.services import get_service_name
+from hawkeyes.utils.banner_grabber import BannerGrabber
+from hawkeyes.utils.services import get_service_name
 
 
 @dataclass

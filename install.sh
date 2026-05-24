@@ -13,7 +13,7 @@
 set -e
 
 VERSION="${HAWKEYES_VERSION:-1.0.0}"
-BASE_URL="${HAWKEYES_BASE_URL:-https://github.com/kyawyelin284/tcp-port-scanner/releases/download/v${VERSION}}"
+BASE_URL="${HAWKEYES_BASE_URL:-https://github.com/green-cyber-city/hawkeyes/releases/download/v${VERSION}}"
 INSTALL_DIR="${HAWKEYES_INSTALL_DIR:-${HOME}/.local/bin}"
 
 bold=""

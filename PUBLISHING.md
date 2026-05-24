@@ -89,7 +89,7 @@ After creating a GitHub Release, mirror files to your CDN. Users never see GitHu
 ### Option C — Temporary: GitHub Releases (internal testing only)
 
 ```bash
-curl -fsSL https://github.com/kyawyelin284/tcp-port-scanner/releases/download/v1.0.0/install.sh | sh
+curl -fsSL https://github.com/green-cyber-city/hawkeyes/releases/download/v1.0.0/install.sh | sh
 ```
 
 Use this while testing. Switch to Option A before promoting publicly.

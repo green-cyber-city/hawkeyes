@@ -26,7 +26,8 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://pypi.org/project/hawkeyes/"
+Homepage = "https://github.com/green-cyber-city/hawkeyes"
+Repository = "https://github.com/green-cyber-city/hawkeyes"
 
 [project.scripts]
 hawk = "hawkeyes.cli:main"

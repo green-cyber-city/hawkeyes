@@ -9,7 +9,7 @@ A multithreaded TCP port scanner for educational cybersecurity. Hawkeyes scans T
 No Python. No pip. One command:
 
 ```bash
-curl -fsSL https://github.com/kyawyelin284/tcp-port-scanner/releases/download/v1.0.0/install.sh | sh
+curl -fsSL https://github.com/green-cyber-city/hawkeyes/releases/download/v1.0.0/install.sh | sh
 ```
 
 This downloads a standalone `hawk` binary and installs it to `~/.local/bin/hawk`.
